@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: 2010-09-09
 
 Description: |
-  Assessment test 2
+  assessment2joni
 
 Resources:
 
@@ -33,7 +33,7 @@ Resources:
   Lambda:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: 'getFruit'
+      FunctionName: 'joniGetFruit'
       Role: !GetAtt LambdaRole.Arn
       Handler: index.handler
       Runtime: nodejs16.x
@@ -74,17 +74,17 @@ Resources:
   MyApiGateway:
     Type: AWS::ApiGatewayV2::Api
     Properties:
-      Name: "MyApiGateway"
+      Name: "JoniApiGateway"
       ProtocolType: "HTTP"
-      # CorsConfiguration:
-      #   AllowHeaders:
-      #     - Authorization
-      #   AllowMethods:
-      #     - GET
-      #     - POST
-      #     - OPTIONS
-      #   AllowOrigins:
-      #     - '*'
+      CorsConfiguration:
+        AllowHeaders:
+          - Authorization
+        AllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        AllowOrigins:
+          - '*'
 
   MyApiGatewayStage:
     Type: AWS::ApiGatewayV2::Stage
@@ -111,3 +111,32 @@ Resources:
         - /
         - - integrations
           - !Ref LambdaIntegration
+
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketName: assessment2joni
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+
+  MyS3BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: Assessment2JoniPolicy
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref MyS3Bucket
+                - /*
+      Bucket: !Ref MyS3Bucket
