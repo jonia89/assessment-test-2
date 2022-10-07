@@ -3,10 +3,13 @@
 // Should return the cart total.
 async function calculateTotal(items) {
 try {
-  const prices = Object.values(...items)
-  let total = 0;
-  total = prices.match(/\d+/g);
-  total = total.reduce((a, b) => Number(a) + Number(b));
+  const total = {};
+  const item = items.match(/\d+/g);
+  for (const obj of item) {
+    for (const [prop, num] of Object.entries(obj)) {
+      total[prop] = (total[prop] || 0) + num;
+    }
+  }
   return total;
 } catch (error) {
   console.log("Something went wrong when calculating total", error)
@@ -18,14 +21,17 @@ try {
 // Should return the cart average.
 async function calculateAvg(items) {
   try {
-  const prices = Object.values(...items)
-  let average = 0;
-  average = prices.match(/\d+/g);
-  average = average.reduce((a, b) => (Number(a) + Number(b)) / items.length);
-  return average;
+  const average = {};
+  const item = items.match(/\d+/g)
+  for (const obj of item) {
+    for (const [prop, num] of Object.entries(obj)) {
+      average[prop] = ((average[prop] || 0) + num) / item.length;
+    }
+  }
+    return average;
   } catch (error) {
     console.log("Something went wrong when calculating average", error)
   }
 }
 
- export { calculateTotal, calculateAvg };
+export { calculateTotal, calculateAvg };
