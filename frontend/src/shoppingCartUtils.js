@@ -1,37 +1,34 @@
 // Takes a list of fruit objects as arguments
-// eg. [{'name': 'Banana', 'price': 1}, {'name': 'Apple', 'price': 2}]
+/*const items = [
+  { name: "Banana", price: 1 },
+  { name: "Apple", price: 2 },
+];*/
 // Should return the cart total.
-async function calculateTotal(items) {
-try {
-  const total = {};
-  const item = items.match(/\d+/g);
-  for (const obj of item) {
-    for (const [prop, num] of Object.entries(obj)) {
-      total[prop] = (total[prop] || 0) + num;
-    }
+function calculateTotal(items) {
+  try {
+    let total = 0;
+    items.forEach(function (item) {
+      total += item.price;
+    });
+    return total;
+  } catch (error) {
+    console.log("Something went wrong when calculating total", error);
   }
-  return total;
-} catch (error) {
-  console.log("Something went wrong when calculating total", error)
 }
-}
-
+//console.log(calculateTotal(items));
 // Takes a list of fruit objects as arguments
 // eg. [{'name': 'Banana', 'price': 1}, {'name': 'Apple', 'price': 2}]
 // Should return the cart average.
-async function calculateAvg(items) {
+function calculateAvg(items) {
   try {
-  const average = {};
-  const item = items.match(/\d+/g)
-  for (const obj of item) {
-    for (const [prop, num] of Object.entries(obj)) {
-      average[prop] = ((average[prop] || 0) + num) / item.length;
-    }
-  }
-    return average;
+    let average = 0;
+    items.forEach(function (item) {
+      average += item.price;
+    });
+    return average / items.length;
   } catch (error) {
-    console.log("Something went wrong when calculating average", error)
+    console.log("Something went wrong when calculating total", error);
   }
 }
-
+//console.log(calculateAvg(items));
 export { calculateTotal, calculateAvg };
